@@ -22,31 +22,18 @@
         <a id="linkWeb" href="#" class="btn btn-web">Iphone</a>
     </div>
 
-    <script>
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const data = urlParams.get('data');
-            
-            if (data) {
-                const appUrl = "gymapp://import?data=" + encodeURIComponent(data);
-                const webUrl = "https://rdagmr98.github.io/gymapplogbook/?data=" + encodeURIComponent(data);
-
-                // 1. Prova subito ad aprire l'App APK
-                window.location.href = appUrl;
-
-                // 2. Prepara i pulsanti nel caso il redirect fallisca
-                document.getElementById('linkApp').href = appUrl;
-                document.getElementById('linkWeb').href = webUrl;
-
-                // 3. Se dopo 2.5 secondi siamo ancora qui, mostra le opzioni
-                setTimeout(function() {
-                    document.getElementById('loader').style.display = 'none';
-                    document.getElementById('options').style.display = 'block';
-                }, 2500);
-            } else {
-                document.body.innerHTML = "<h3>Link non valido: nessun dato trovato.</h3>";
-            }
-        };
-    </script>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const data = urlParams.get('data');
+    if (data) {
+        // Trucco del redirect: proviamo ad aprire l'app tramite HTTPS
+        // Se l'app è configurata con l'App Link, questo la sveglierà
+        const targetUrl = window.location.href; 
+        
+        // Se l'utente clicca il tasto, ri-puntiamo a noi stessi 
+        // ma Android a quel punto dovrebbe suggerire l'app
+        document.getElementById('openAppBtn').href = targetUrl;
+    }
+</script>
 </body>
 </html>
