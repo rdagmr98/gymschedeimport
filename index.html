@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Gym Logbook Redirect</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const data = urlParams.get('data');
+            
+            if (data) {
+                // Tentativo di apertura app tramite lo schema che abbiamo configurato nel Manifest
+                const appUrl = "gymapp://import?data=" + data;
+                window.location.href = appUrl;
+
+                // Opzionale: se dopo 2 secondi l'app non si apre, mostra un messaggio
+                setTimeout(function() {
+                    document.body.innerHTML = "<h3>Se l'app non si è aperta, <a href='" + appUrl + "'>clicca qui</a></h3>";
+                }, 2000);
+            } else {
+                document.body.innerHTML = "<h3>Link non valido.</h3>";
+            }
+        };
+    </script>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+    </style>
+</head>
+<body>
+    <h2>Reindirizzamento a Gym Logbook...</h2>
+</body>
+</html>
