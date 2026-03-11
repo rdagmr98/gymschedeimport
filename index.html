@@ -2,32 +2,39 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Gym Logbook Redirect</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gym Logbook Import</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; text-align: center; padding: 50px 20px; background-color: #f4f4f9; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
     <script>
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             const data = urlParams.get('data');
             
             if (data) {
-                // Tentativo di apertura app tramite lo schema che abbiamo configurato nel Manifest
-                const appUrl = "gymapp://import?data=" + data;
+                // Tentativo di apertura app
+                const appUrl = "gymapp://import?data=" + encodeURIComponent(data);
                 window.location.href = appUrl;
 
-                // Opzionale: se dopo 2 secondi l'app non si apre, mostra un messaggio
+                // Se dopo 3 secondi non succede nulla, mostriamo il tasto manuale
                 setTimeout(function() {
-                    document.body.innerHTML = "<h3>Se l'app non si è aperta, <a href='" + appUrl + "'>clicca qui</a></h3>";
-                }, 2000);
+                    document.getElementById('status').innerHTML = 
+                        "<h3>Se l'app non si è aperta automaticamente:</h3>" +
+                        "<a href='" + appUrl + "' style='display:inline-block; padding:15px 25px; background:#3498db; color:white; text-decoration:none; border-radius:8px;'>Apri Gym Logbook</a>";
+                }, 3000);
             } else {
-                document.body.innerHTML = "<h3>Link non valido.</h3>";
+                document.getElementById('status').innerHTML = "<h3>Errore: Nessun dato trovato nel link.</h3>";
             }
         };
     </script>
-    <style>
-        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
-    </style>
 </head>
 <body>
-    <h2>Reindirizzamento a Gym Logbook...</h2>
+    <div id="status">
+        <h2>Ricezione scheda in corso...</h2>
+        <div class="loader"></div>
+        <p>Ti stiamo portando nell'app Gym Logbook.</p>
+    </div>
 </body>
 </html>
