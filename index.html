@@ -2,44 +2,44 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Gym Logbook - Importa</title>
+    <title>Gym Logbook</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 40px 20px; background: #f4f4f9; }
-        .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .btn { display: block; width: 100%; max-width: 280px; margin: 15px auto; padding: 18px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 18px; transition: 0.2s; }
-        .btn-app { background: #007AFF; color: white; }
-        .btn-web { background: #34C759; color: white; }
-        .info { color: #666; font-size: 14px; margin-top: 20px; }
+        body { font-family: sans-serif; text-align: center; padding: 50px 20px; background: #f4f4f9; }
+        .btn { display: block; width: 100%; max-width: 300px; margin: 15px auto; padding: 20px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 18px; }
+        .btn-apk { background: #007AFF; color: white; }
+        .btn-web { background: #28a745; color: white; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2>Pronto per l'importazione!</h2>
-        <p>Scegli dove vuoi caricare la scheda:</p>
+    <h2>Scheda Ricevuta!</h2>
+    <p>Scegli come continuare:</p>
 
-        <a id="btnAPK" href="#" class="btn btn-app">APRI NELL'APP (APK)</a>
+    <a id="btnAPK" href="#" class="btn btn-apk">APRI NELL'APP (APK)</a>
 
-        <a id="btnWEB" href="#" class="btn btn-web">USA VERSIONE WEB</a>
+    <a id="btnWEB" href="#" class="btn btn-web">USA VERSIONE WEB</a>
 
-        <div class="info" id="debug">In attesa di dati...</div>
-    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const data = urlParams.get('data');
 
-<script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const data = urlParams.get('data');
+        if (data) {
+            // URL che Android deve intercettare (App Link)
+            const currentUrl = window.location.href;
+            // URL della tua app Web
+            const webUrl = "https://rdagmr98.github.io/gymapplogbook/?data=" + data;
 
-    if (data) {
-        const currentUrl = window.location.href;
-        const webAppUrl = "https://rdagmr98.github.io/gymapplogbook/?data=" + data;
+            document.getElementById('btnAPK').href = currentUrl;
+            document.getElementById('btnWEB').href = webUrl;
 
-        // Configura i pulsanti
-        document.getElementById('btnAPK').href = currentUrl; // Ri-tenta l'App Link
-        document.getElementById('btnWEB').href = webAppUrl; // Va alla versione Web
-
-        // Prova ad aprirlo subito: se Android è configurato bene, l'app scatta qui
-        window.location.href = currentUrl;
-    }
-</script>
+            // PROVA AUTOMATICA (UNA VOLTA SOLA)
+            // Se Android è configurato bene, l'app si apre. 
+            // Se no, la pagina resta ferma qui e l'utente sceglie.
+            if (!window.location.hash) {
+                window.location.hash = "tried"; // Segnalibro per non ricaricare
+                window.location.href = currentUrl;
+            }
+        }
+    </script>
 </body>
 </html>
