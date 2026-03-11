@@ -2,42 +2,46 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Gym Logbook</title>
+    <title>Gym Logbook - Importa</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 50px 20px; background: #f4f4f9; }
-        .btn { display: block; width: 100%; max-width: 300px; margin: 15px auto; padding: 20px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 18px; }
+        body { font-family: sans-serif; text-align: center; padding: 40px 20px; background: #f4f4f9; }
+        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 350px; margin: auto; }
+        .btn { display: block; padding: 18px; margin: 15px 0; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 18px; }
         .btn-apk { background: #007AFF; color: white; }
         .btn-web { background: #28a745; color: white; }
+        p { color: #666; line-height: 1.5; }
     </style>
 </head>
 <body>
-    <h2>Scheda Ricevuta!</h2>
-    <p>Scegli come continuare:</p>
+    <div class="card">
+        <h3>Scheda Ricevuta!</h3>
+        <p>Scegli dove aprirla:</p>
 
-    <a id="btnAPK" href="#" class="btn btn-apk">APRI NELL'APP (APK)</a>
+        <a id="btnAPK" href="#" class="btn btn-apk">APRI NELL'APP</a>
 
-    <a id="btnWEB" href="#" class="btn btn-web">USA VERSIONE WEB</a>
+        <a id="btnWEB" href="#" class="btn btn-web">USA VERSIONE WEB</a>
+        
+        <p style="font-size: 11px;">Se l'app non si apre, usa la versione Web.</p>
+    </div>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const data = urlParams.get('data');
 
         if (data) {
-            // URL che Android deve intercettare (App Link)
-            const currentUrl = window.location.href;
-            // URL della tua app Web
+            // Prepariamo i due percorsi
+            const currentUrl = window.location.href; 
             const webUrl = "https://rdagmr98.github.io/gymapplogbook/?data=" + data;
 
             document.getElementById('btnAPK').href = currentUrl;
             document.getElementById('btnWEB').href = webUrl;
 
-            // PROVA AUTOMATICA (UNA VOLTA SOLA)
-            // Se Android è configurato bene, l'app si apre. 
-            // Se no, la pagina resta ferma qui e l'utente sceglie.
+            // PROVA AUTOMATICA (solo la prima volta che entri nella pagina)
             if (!window.location.hash) {
-                window.location.hash = "tried"; // Segnalibro per non ricaricare
-                window.location.href = currentUrl;
+                window.location.hash = "loaded";
+                // Tenta l'apertura ma non ricaricare se fallisce
+                setTimeout(() => { window.location.href = currentUrl; }, 100);
             }
         }
     </script>
