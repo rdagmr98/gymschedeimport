@@ -25,27 +25,21 @@
         <div class="info" id="debug">In attesa di dati...</div>
     </div>
 
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const data = urlParams.get('data');
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const data = urlParams.get('data');
 
-        if (data) {
-            document.getElementById('debug').innerText = "Dati rilevati. Clicca un pulsante sopra.";
-            
-            // Link per l'app Android (lo schema che abbiamo nel Manifest)
-            const appUrl = "gymapp://import?data=" + data;
-            
-            // Link per la tua versione Web
-            const webUrl = "https://rdagmr98.github.io/gymapplogbook/?data=" + data;
+    if (data) {
+        const currentUrl = window.location.href;
+        const webAppUrl = "https://rdagmr98.github.io/gymapplogbook/?data=" + data;
 
-            document.getElementById('btnAPK').href = appUrl;
-            document.getElementById('btnWEB').href = webUrl;
+        // Configura i pulsanti
+        document.getElementById('btnAPK').href = currentUrl; // Ri-tenta l'App Link
+        document.getElementById('btnWEB').href = webAppUrl; // Va alla versione Web
 
-            // Prova un unico tentativo automatico, ma senza loop
-            window.location.href = appUrl;
-        } else {
-            document.getElementById('debug').innerText = "Errore: Nessun dato trovato nel link.";
-        }
-    </script>
+        // Prova ad aprirlo subito: se Android è configurato bene, l'app scatta qui
+        window.location.href = currentUrl;
+    }
+</script>
 </body>
 </html>
