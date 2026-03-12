@@ -1,40 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Gym Logbook - Import</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 40px 20px; background: #f4f4f9; }
-        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 320px; margin: auto; }
-        .btn { display: block; padding: 20px; margin: 20px 0; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 18px; }
-        .btn-apk { background: #007AFF; color: white; }
-        .btn-web { background: #28a745; color: white; }
+        body { font-family: sans-serif; text-align: center; padding: 50px 20px; background: #fafafa; }
+        .btn { display: block; width: 100%; max-width: 300px; margin: 20px auto; padding: 20px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 18px; }
+        .btn-apk { background: #007AFF; color: white; border: none; cursor: pointer; }
+        .btn-web { background: #e9ecef; color: #333; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h3>Scheda Ricevuta!</h3>
-        <p>Scegli dove aprirla:</p>
+    <h2>Importazione Scheda</h2>
+    <p>Scegli la destinazione:</p>
 
-        <a id="btnAPK" href="#" class="btn btn-apk">Android</a>
-
-        <a id="btnWEB" href="#" class="btn btn-web">Iphone</a>
-    </div>
+    <button onclick="openApp()" class="btn btn-apk">APRI NELL'APP (APK)</button>
+    <a id="webLink" href="#" class="btn btn-web">Usa versione Web</a>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const data = urlParams.get('data');
+        const data = new URLSearchParams(window.location.search).get('data');
+        const webUrl = "https://rdagmr98.github.io/gymapplogbook/?data=" + data;
+        document.getElementById('webLink').href = webUrl;
 
-        if (data) {
-            // Generiamo i link
-            const currentUrl = window.location.href;
-            const webUrl = "https://rdagmr98.github.io/gymapplogbook/?data=" + data;
-
-            document.getElementById('btnAPK').href = currentUrl;
-            document.getElementById('btnWEB').href = webUrl;
-        } else {
-            document.body.innerHTML = "<h3>Nessun dato trovato.</h3>";
+        function openApp() {
+            // Tentativo 1: Usiamo il link HTTPS stesso. 
+            // Se Android è configurato, questo DEVE aprire l'app.
+            window.location.href = window.location.href; 
+            
+            // Tentativo 2: Se dopo 500ms siamo ancora qui, proviamo lo schema custom
+            setTimeout(() => {
+                window.location.href = "gymapp://import?data=" + data;
+            }, 500);
         }
     </script>
 </body>
